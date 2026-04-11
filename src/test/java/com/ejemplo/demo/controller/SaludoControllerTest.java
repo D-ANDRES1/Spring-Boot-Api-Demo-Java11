@@ -5,6 +5,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.Instant;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.ejemplo.demo.dto.SaludoResponse;
 import com.ejemplo.demo.service.SaludoService;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @WebMvcTest(PruebaResponseController.class)
@@ -33,13 +37,20 @@ public class SaludoControllerTest {
 			.andExpect(jsonPath("$.Estado").value("Ok"));
 	}
 	
+	
+	
+	
 	@Test
 	@DisplayName("Debe responder la respuesta")
 	void debeResponderLaRespuesta() throws Exception {
+		
+		when(saludoService.crearSaludo("Ana"))
+	    .thenReturn(new SaludoResponse("Estudiante Ana", Instant.now()));
+		
 		mockMvc.perform(get("/api/v1/saludos")
 				.param("nombre", "Ana"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.nombre").value("Ana"));
+			.andExpect(jsonPath("$.mensaje").value("Estudiante Ana"));
 	}
 	
 	@Test
