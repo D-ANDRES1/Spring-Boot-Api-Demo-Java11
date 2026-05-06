@@ -2,7 +2,7 @@ package com.ejemplo.demo.controller;
 
 import java.util.Map;
 
-import javax.validation.Valid;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ejemplo.demo.dto.SaludoRequest;
 import com.ejemplo.demo.dto.SaludoResponse;
 import com.ejemplo.demo.service.SaludoService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -43,7 +45,7 @@ public class PruebaResponseController {
 	@PostMapping("/saludos")
 	public ResponseEntity<SaludoResponse> saludarPost(
 			@Valid @RequestBody SaludoRequest request){
-		return ResponseEntity.ok(saludoService.crearSaludo(request.getNombre()));
+		return ResponseEntity.ok(saludoService.crearSaludo(request.nombre()));
 	}
 	
 	
