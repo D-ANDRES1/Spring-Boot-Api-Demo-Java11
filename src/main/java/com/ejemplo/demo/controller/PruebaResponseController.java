@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ejemplo.demo.dto.EstadoResponse;
 import com.ejemplo.demo.dto.SaludoRequest;
 import com.ejemplo.demo.dto.SaludoResponse;
 import com.ejemplo.demo.service.SaludoService;
@@ -23,11 +24,14 @@ import jakarta.validation.Valid;
 public class PruebaResponseController {
 
 	@GetMapping
-	public ResponseEntity<Map<String,String>> respuesta() {
-		return ResponseEntity.ok(Map.of(
-				"Estado", "Ok",
-				"Mensaje", "Workshop Springbook activo"
-				));
+	public ResponseEntity<EstadoResponse> respuesta() {
+		
+		EstadoResponse respuesta = new EstadoResponse(
+				"Ok",
+				"Workshop Springbook activo");
+		
+		
+		return ResponseEntity.ok(respuesta);
 	}
 	
 	private final SaludoService saludoService;

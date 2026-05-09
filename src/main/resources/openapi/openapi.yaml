@@ -1,0 +1,206 @@
+openapi: 3.0.3
+
+info:
+  title: Demo API Spring Boot
+  version: 1.0.0
+
+tags:
+  - name: workshop
+  - name: simulaciones
+  - name: demo-estado
+
+paths:
+
+  /api/v1:
+    get:
+      tags:
+        - workshop
+      operationId: getWorkshopHealth
+      responses:
+        "200":
+          description: Estado del sistema
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EstadoResponse"
+
+  /api/v1/saludos:
+    get:
+      tags:
+        - workshop
+      operationId: saludarPorGet
+      parameters:
+        - name: nombre
+          in: query
+          required: false
+          schema:
+            type: string
+            default: Mundo
+      responses:
+        "200":
+          description: Saludo por GET
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SaludoResponse"
+
+    post:
+      tags:
+        - workshop
+      operationId: saludarPorPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SaludoRequest"
+      responses:
+        "200":
+          description: Saludo por POST
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SaludoResponse"
+
+  /api/v1/simulaciones/prestamo:
+    post:
+      tags:
+        - simulaciones
+      operationId: simularPrestamo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrestamoRequest"
+      responses:
+        "200":
+          description: Resultado simulación préstamo
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PrestamoResponse"
+
+  /api/v1/demo/estado/singleton/{valor}:
+    post:
+      tags:
+        - demo-estado
+      operationId: actualizarSingleton
+      parameters:
+        - name: valor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Estado actualizado
+
+  /api/v1/demo/estado/singleton:
+    get:
+      tags:
+        - demo-estado
+      operationId: obtenerSingleton
+      responses:
+        "200":
+          description: Estado actual
+
+  /api/v1/demo/estado/singleton/reset:
+    post:
+      tags:
+        - demo-estado
+      operationId: reiniciarSingleton
+      responses:
+        "200":
+          description: Estado reseteado
+
+  /api/v1/demo/estado/manual/{valor}:
+    post:
+      tags:
+        - demo-estado
+      operationId: actualizarManual
+      parameters:
+        - name: valor
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Estado actualizado manual
+
+  /api/v1/demo/estado/manual:
+    get:
+      tags:
+        - demo-estado
+      operationId: obtenerManual
+      responses:
+        "200":
+          description: Estado manual actual
+
+components:
+
+  schemas:
+
+    EstadoResponse:
+      type: object
+      properties:
+        estado:
+          type: string
+        mensaje:
+          type: string
+
+    SaludoRequest:
+      type: object
+      properties:
+        nombre:
+          type: string
+
+    SaludoResponse:
+      type: object
+      properties:
+        mensaje:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    PrestamoRequest:
+      type: object
+      properties:
+        monto:
+          type: number
+          format: double
+        tasaAnual:
+          type: number
+          format: double
+        meses:
+          type: integer
+
+    PrestamoResponse:
+      type: object
+      properties:
+        cuotaMensual:
+          type: number
+          format: double
+        totalPagar:
+          type: number
+          format: double
+        interesTotal:
+          type: number
+          format: double
+
+    ErrorResponse:
+      type: object
+      properties:
+        codigo:
+          type: string
+        mensaje:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        detalles:
+          type: object
+          additionalProperties:
+            type: string
